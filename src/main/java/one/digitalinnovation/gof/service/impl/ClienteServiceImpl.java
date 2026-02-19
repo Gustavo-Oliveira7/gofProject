@@ -40,13 +40,6 @@ public class ClienteServiceImpl implements ClienteService {
 	}
 
 	@Override
-	public Cliente buscarPorId(Long id) {
-		// Buscar Cliente por ID.
-		Optional<Cliente> cliente = clienteRepository.findById(id);
-		return cliente.get();
-	}
-
-	@Override
 	public void inserir(Cliente cliente) {
 		salvarClienteComCep(cliente);
 	}
@@ -84,7 +77,8 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public Cliente buscarPorId(Long id) {
         return clienteRepository.findById(id)
-                .orElseThrow(() -> new one.digitalinnovation.gof.exception.ResourceNotFoundException(
+                .orElseThrow(() -> new one.digitalinnovation
+						.gof.exception.ResourceNotFoundException(
                         "Cliente não encontrado com id: " + id
                 ));
     }
