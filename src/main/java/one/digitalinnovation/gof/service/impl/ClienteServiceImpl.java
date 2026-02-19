@@ -51,14 +51,15 @@ public class ClienteServiceImpl implements ClienteService {
 		salvarClienteComCep(cliente);
 	}
 
-	@Override
-	public void atualizar(Long id, Cliente cliente) {
-		// Buscar Cliente por ID, caso exista:
-		Optional<Cliente> clienteBd = clienteRepository.findById(id);
-		if (clienteBd.isPresent()) {
-			salvarClienteComCep(cliente);
-		}
-	}
+    @Override
+    public void atualizar(Long id, Cliente cliente) {
+        var clienteBd = clienteRepository.findById(id)
+                .orElseThrow(() -> new one.digitalinnovation.gof.exception.ResourceNotFoundException(
+                        "Cliente não encontrado com id: " + id
+                ));
+        cliente.setId(clienteBd.getId());
+        salvarClienteComCep(cliente);
+    }
 
 	@Override
 	public void deletar(Long id) {
@@ -79,5 +80,13 @@ public class ClienteServiceImpl implements ClienteService {
 		// Inserir Cliente, vinculando o Endereco (novo ou existente).
 		clienteRepository.save(cliente);
 	}
+
+    @Override
+    public Cliente buscarPorId(Long id) {
+        return clienteRepository.findById(id)
+                .orElseThrow(() -> new one.digitalinnovation.gof.exception.ResourceNotFoundException(
+                        "Cliente não encontrado com id: " + id
+                ));
+    }
 
 }
